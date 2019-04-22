@@ -252,8 +252,11 @@
         };
 
         $.post("/api/friends", userData, function(data) {
-          $("#match-name").text(data.name);
-          $("#match-img").attr("src", data.photo);
+          if (data.length > 1) {
+            console.log('multiple matches...')
+          }
+          $("#match-name").text(data[0].name);
+          $("#match-img").attr("src", data[0].photo);
           $("#results-modal").modal("toggle");
         });
       } else {

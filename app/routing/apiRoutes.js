@@ -6,14 +6,11 @@ const fileName = '../data/friends.json'
 const file = require(fileName);
 
 router.get('/api/friends', (req, res) => {
-  res.json({'response':'api'})
+  res.json(file)
 })
 
 router.post('/api/friends', (req, res) => {
-  // save to the file?  
-  // get the current scores and compare them with each of the other friends
-
-  const Scores = req.body[0].scores;
+  const Scores = req.body.scores;
 
   let matchNumber = null;
   let matches = [];
@@ -27,23 +24,14 @@ router.post('/api/friends', (req, res) => {
     if (matchNumber === null || matchNumber > difference) {
       matchNumber = difference;
       matches.length = 0;
-      matches.push(friend.name)
-    }
-
-    // in case there is a tie...
-    if (matchNumber === difference) {
-      matches.push(friend.name);
+      matches.push(friend)
+    } else if (matchNumber === difference) {
+      matches.push(friend);
     }
   
-  }
-
-  console.log(matchNumber);
-  console.log(matches);
-
+  }  
   
-  
-  
-  res.json('api')
+  res.json(matches);
 })
 
 module.exports = router;
