@@ -145,7 +145,7 @@
         $(".form-control").each(function() {
           if ($(this).val() === "") {
             if ($(this).attr('id') === 'photo') {
-              $('#photo').val('./img/Stormtrooper.jpg');
+              $('#photo').val('Stormtrooper.jpg');
             } else {
               isValid = false;
             }
@@ -181,11 +181,8 @@
         };
 
         $.post("/api/friends", userData, function(data) {
-          if (data.length > 1) {
-            console.log('multiple matches...')
-          }
           $("#match-name").text(data[0].name);
-          $("#match-img").attr("src", data[0].photo);
+          $("#match-img").attr("src", '/' + data[0].photo);
           $("#results-modal").modal("toggle");
         });
 

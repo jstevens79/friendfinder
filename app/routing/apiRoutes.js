@@ -5,12 +5,13 @@ const fs = require('fs');
 const fileName = '../data/friends.json'
 const file = require(fileName);
 
+
 router.get('/api/friends', (req, res) => {
   res.json(file)
 })
 
 router.post('/api/friends', (req, res) => {
-  const Scores = req.body.scores;
+  const Scores = req.body.scores.map(score => parseInt(score));
 
   let matchNumber = null;
   let matches = [];
@@ -29,9 +30,18 @@ router.post('/api/friends', (req, res) => {
       matches.push(friend);
     }
   
-  }  
+  }
+  const NewFriend = req.body;
+  NewFriend.scores = Scores;
+  const UpdatedFile = [...file, NewFriend]
+
+  fs.writeFile(path.join(__dirname, '../data/friends.json'), JSON.stringify(UpdatedFile), err => {
+    if (err) throw err;
+    console.log('written...')
+    res.json(matches);
+  })
   
-  res.json(matches);
+  
 })
 
 module.exports = router;
