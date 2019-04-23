@@ -4,7 +4,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>FriendFinder</title>
+  <title>Star Wars Friend Finder</title>
 
   <!-- Latest compiled and minified CSS & JS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
@@ -65,7 +65,7 @@
         </div>
         <div class="modal-body">
           <h2 id="match-name"></h2>
-          <img id="match-img" src="https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/6/005/064/1bd/3435aa3.jpg" alt="">
+          <img id="match-img" src="" alt="">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -76,10 +76,67 @@
   </div>
 
   <script type="text/javascript">
-   
+
+  $(document).ready(function() {
+
+    var questions = [
+      "You are driven by rage due to childhood trauma.",
+      "You're not afraid of facing impossible odds.",
+      "When things get tough, you prefer to retreat - and maybe hang out in a swampy forrest.",
+      "You have an easy time making friends.",
+      "People can rarely upset you.",
+      "You're a natural born leader.",
+      "If something's going to get done, you have to do it yourself.",
+      "People might say you wear a mask to cover up your feelings.",
+      "You tend to make rash decisions without considering the consequences.",
+      "Most of the time, you prefer to be left alone."
+    ]
+
+    $.each(questions, function(idx, val) {
+      var num = idx + 1;
+      var question = $('<div>');
+      var title = $('<h3>').text('Question ' + num);
+      var ques = $('<h4>').text(val);
+      var select = $('<select>').attr('id', 'q' + num).addClass('chosen-select');
+      var option0 = $('<option>').attr('value', "").text('');
+      var option1 = $('<option>').attr('value', 1).text('1 (Strongly Disagree)');
+      var option2 = $('<option>').attr('value', 2).text('2');
+      var option3 = $('<option>').attr('value', 3).text('3');
+      var option4 = $('<option>').attr('value', 4).text('4');
+      var option5 = $('<option>').attr('value', 5).text('5 (Strongly Agree)');
+      select.append(option0, option1, option2, option3, option4, option5);
+      question.append(title, ques, select);
+      $('.questions').append(question);
+    })
+
+    // Chosen CSS
+    var config = {
+      ".chosen-select": {
+        disable_search: true
+      },
+      ".chosen-select-deselect": {
+        allow_single_deselect: true,
+        disable_search: true
+      },
+      ".chosen-select-no-single": {
+        disable_search: true
+      },
+      ".chosen-select-no-results": {
+        no_results_text: "Oops, nothing found!"
+      },
+      ".chosen-select-width": {
+        width: "95%"
+      }
+    };
+
+    for (var selector in config) {
+      $(selector).chosen(config[selector]);
+    }
+
+    })
 
     // Capture the form inputs
-    $("#submit").on("click", function(event) {
+  $("#submit").on("click", function(event) {
       event.preventDefault();
 
       // Form validation
@@ -88,9 +145,10 @@
         $(".form-control").each(function() {
           if ($(this).val() === "") {
             if ($(this).attr('id') === 'photo') {
-              console.log('photo...')
+              $('#photo').val('./img/Stormtrooper.jpg');
+            } else {
+              isValid = false;
             }
-            isValid = false;
           }
         });
 
@@ -130,71 +188,13 @@
           $("#match-img").attr("src", data[0].photo);
           $("#results-modal").modal("toggle");
         });
+
       } else {
         alert("Please fill out all fields before submitting!");
       }
     });
 
-    $(document).ready(function() {
-
-      var questions = [
-        "Your mind is always buzzing with unexplored ideas and plans.",
-        "Generally speaking, you rely more on your experience than your imagination.",
-        "You find it easy to stay relaxed and focused even when there is some pressure.",
-        "You rarely do something just out of sheer curiosity.",
-        "People can rarely upset you.",
-        "It is often difficult for you to relate to other people’s feelings.",
-        "In a discussion, truth should be more important than people’s sensitivities.",
-        "You rarely get carried away by fantasies and ideas.",
-        "You think that everyone’s views should be respected regardless of whether they are supported by facts or not.",
-        "You feel more energetic after spending time with a group of people."
-      ]
-
-      $.each(questions, function(idx, val) {
-        var num = idx + 1;
-        var question = $('<div>');
-        var title = $('<h3>').text('Question ' + num);
-        var ques = $('<h4>').text(val);
-        var select = $('<select>').attr('id', 'q' + num).addClass('chosen-select');
-        var option0 = $('<option>').attr('value', "").text('');
-        var option1 = $('<option>').attr('value', 1).text('1 (Strongly Disagree)');
-        var option2 = $('<option>').attr('value', 2).text('2');
-        var option3 = $('<option>').attr('value', 3).text('3');
-        var option4 = $('<option>').attr('value', 4).text('4');
-        var option5 = $('<option>').attr('value', 5).text('5 (Strongly Agree)');
-        select.append(option0, option1, option2, option3, option4, option5);
-        question.append(title, ques, select);
-        $('.questions').append(question);
-      })
-
-       // Chosen CSS
-      var config = {
-        ".chosen-select": {
-          disable_search: true
-        },
-        ".chosen-select-deselect": {
-          allow_single_deselect: true,
-          disable_search: true
-        },
-        ".chosen-select-no-single": {
-          disable_search: true
-        },
-        ".chosen-select-no-results": {
-          no_results_text: "Oops, nothing found!"
-        },
-        ".chosen-select-width": {
-          width: "95%"
-        }
-      };
-
-      for (var selector in config) {
-        $(selector).chosen(config[selector]);
-      }
-
-
-
-    })
-
+    
   </script>
 
 </body>
